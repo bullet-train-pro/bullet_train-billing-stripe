@@ -13,6 +13,14 @@ module BulletTrain
           end
         end
       end
+
+      module AbilitySupport
+        def apply_billing_abilities(user)
+          super
+          can :read, Billing::Stripe::Subscription, team_id: user.team_ids
+          can :manage, Billing::Stripe::Subscription, team_id: user.administrating_team_ids
+        end
+      end
     end
   end
 end
@@ -22,3 +30,4 @@ def stripe_billing_enabled?
 end
 
 ActiveSupport.on_load(:bullet_train_teams_base) { include BulletTrain::Billing::Stripe::Teams::Base }
+ActiveSupport.on_load(:bullet_train_billing_ability_support) { prepend BulletTrain::Billing::Stripe::AbilitySupport }
