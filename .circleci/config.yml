@@ -94,8 +94,6 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    environment:
-      BUNDLE_PATH: vendor/bundle
     parallelism: 16
     steps:
       - checkout:
@@ -105,17 +103,12 @@ jobs:
 
       - run: ../../bin/checkout-and-link-starter-repo
 
-      - restore_cache: *restore_bundler_cache
-
       - ruby/install-deps:
           clean-bundle: true
-
       - run: bundle exec rake bt:link
       - run: yarn install
       - run: yarn build
       - run: yarn build:css
-
-      - save_cache: *save_bundler_cache
 
       # TODO Figure out how to make these work for `tmp/starter`
       # - restore_cache: *restore_yarn_cache
@@ -152,8 +145,6 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    environment:
-      BUNDLE_PATH: vendor/bundle
     parallelism: 16
     steps:
       - checkout:
@@ -163,15 +154,12 @@ jobs:
 
       - run: ../../bin/checkout-and-link-starter-repo
 
-      - restore_cache: *restore_bundler_cache
       - ruby/install-deps:
           clean-bundle: true
       - run: bundle exec rake bt:link
       - run: yarn install
       - run: yarn build
       - run: yarn build:css
-
-      - save_cache: *save_bundler_cache
 
       # TODO Figure out how to make these work for `tmp/starter`
       # - restore_cache: *restore_yarn_cache
