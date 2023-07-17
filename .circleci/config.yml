@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  ruby: circleci/ruby@0.1.2
+  ruby: circleci/ruby@2.0.1
   browser-tools: circleci/browser-tools@1.4.1
   jq: circleci/jq@2.2.0
 aliases:
@@ -75,8 +75,8 @@ jobs:
       # - restore_cache: *restore_yarn_cache
 
       # Install dependencies
-      - ruby/bundle-install
-      - run: bundle clean --force
+      - ruby/install-deps:
+          clean-bundle: true
 
       # # Save dependency caches
       # # We only do this as part of this job, because it's time consuming and we don't want it to slow down test runners.
@@ -106,8 +106,10 @@ jobs:
       - run: ../../bin/checkout-and-link-starter-repo
 
       - restore_cache: *restore_bundler_cache
-      - run: bundle install
-      - run: bundle clean --force
+
+      - ruby/install-deps:
+          clean-bundle: true
+
       - run: bundle exec rake bt:link
       - run: yarn install
       - run: yarn build
@@ -162,8 +164,8 @@ jobs:
       - run: ../../bin/checkout-and-link-starter-repo
 
       - restore_cache: *restore_bundler_cache
-      - run: bundle install
-      - run: bundle clean --force
+      - ruby/install-deps:
+          clean-bundle: true
       - run: bundle exec rake bt:link
       - run: yarn install
       - run: yarn build
