@@ -32,5 +32,7 @@ done
 
 echo "gem \"bullet_train-billing\", github: \"bullet-train-pro/bullet_train-billing\"" >> Gemfile
 
+bundle env
+
 updates="bullet_train-billing ${packages[@]}"
 bundle lock --verbose --update $updates
