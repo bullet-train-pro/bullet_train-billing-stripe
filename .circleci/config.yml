@@ -101,6 +101,8 @@ jobs:
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
 
+      - run: rm LICENSE.chromedriver
+
       - run: ../../bin/checkout-and-link-starter-repo
 
       - ruby/install-deps:
@@ -151,6 +153,8 @@ jobs:
           path: ~/project
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
+
+      - run: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
