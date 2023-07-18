@@ -32,7 +32,5 @@ done
 
 echo "gem \"bullet_train-billing\", github: \"bullet-train-pro/bullet_train-billing\"" >> Gemfile
 
-updates="${packages[@]}"
-
-# TODO Not 100% sure on this, but to get CI working we had to replace this.
-# bundle lock --update $updates
+updates="bullet_train-billing ${packages[@]}"
+bundle lock --update $updates
