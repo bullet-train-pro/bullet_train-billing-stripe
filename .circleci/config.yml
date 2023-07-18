@@ -174,7 +174,8 @@ jobs:
 
       - run: RAILS_ENV=test bin/rails bullet_train_billing_engine:install:migrations bullet_train_billing_stripe_engine:install:migrations db:migrate
 
-      # - run: "bundle add spring"
+      - run: "bundle config unset deployment"
+      - run: "bundle add spring"
       - run:
           name: 'Setup Super Scaffolding System Test'
           command: "bundle exec test/bin/setup-super-scaffolding-system-test"
