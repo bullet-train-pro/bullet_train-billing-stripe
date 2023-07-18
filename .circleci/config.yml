@@ -117,7 +117,6 @@ jobs:
 
       - *wait_for_docker
 
-      - run: "cat db/schema.rb"
       - run:
           name: "Billing Migrations"
           command: |
