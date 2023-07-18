@@ -117,6 +117,8 @@ jobs:
 
       - *wait_for_docker
 
+      - run: RAILS_ENV=test bin/rails db:create db:schema:load
+
       - run:
           name: Run tests with Knapsack Pro
           command: bundle exec rails "knapsack_pro:queue:minitest[--verbose]"
@@ -169,6 +171,8 @@ jobs:
       # - restore_cache: *restore_yarn_cache
 
       - *wait_for_docker
+
+      - run: RAILS_ENV=test bin/rails db:create db:schema:load
 
       - run: "bundle add spring"
       - run:
