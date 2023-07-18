@@ -172,7 +172,8 @@ jobs:
 
       - *wait_for_docker
 
-      - run: RAILS_ENV=test bin/rails db:create db:schema:load
+      - run: RAILS_ENV=test bin/rails -T
+      - run: RAILS_ENV=test bin/rails bullet_train-billing_engine:install:migrations bullet_train-billing-stripe_engine:install:migrations db:migrate
 
       - run: "bundle add spring"
       - run:
