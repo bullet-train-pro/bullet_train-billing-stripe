@@ -69,6 +69,8 @@ jobs:
     steps:
       - checkout
 
+      - run: bin/checkout-and-link-dependencies
+
       # TODO Figure out how to make these work for `tmp/starter`
       # # Restore dependency caches
       # - restore_cache: *restore_bundler_cache
@@ -104,6 +106,7 @@ jobs:
       - run: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
+      - run: ../../bin/checkout-and-link-dependencies
 
       - ruby/install-deps:
           clean-bundle: true
@@ -116,6 +119,8 @@ jobs:
       # - restore_cache: *restore_yarn_cache
 
       - *wait_for_docker
+
+      - run: ./bin/rails db:migrate
 
       - run:
           name: "Billing Migrations"
@@ -166,6 +171,7 @@ jobs:
       - run: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
+      - run: ../../bin/checkout-and-link-dependencies
 
       - ruby/install-deps:
           clean-bundle: true
@@ -179,16 +185,8 @@ jobs:
 
       - *wait_for_docker
 
-      - run:
-          name: "Billing Migrations"
-          command: |
-            bin/rails bullet_train_billing_engine:install:migrations
-            bin/rails bullet_train_billing_stripe_engine:install:migrations
-            bin/rails db:migrate
-          environment:
-            RAILS_ENV: test
+      - run: ./bin/rails db:migrate
 
-      - run: "bundle config unset deployment"
       - run: "bundle add spring"
       - run:
           name: 'Setup Super Scaffolding System Test'

@@ -30,6 +30,15 @@ do
   echo "gem \"$package\", path: \"../..\"" >> Gemfile
 done
 
-echo "gem \"bullet_train-billing\", github: \"bullet-train-pro/bullet_train-billing\"" >> Gemfile
+cat Gemfile
+echo "------"
 
-bundle lock
+pwd
+ls -al
+
+updates="${packages[@]}"
+
+# TODO Not 100% sure on this, but to get CI working we had to replace this.
+# bundle lock --update $updates
+
+#bundle install
