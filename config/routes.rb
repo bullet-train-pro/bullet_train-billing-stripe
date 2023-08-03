@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # TODO: The linter complains about a useless assignment. Do we actually need this for anything?
   collection_actions = [:index, :new, :create] # standard:disable Lint/UselessAssignment
 
   namespace :webhooks do
