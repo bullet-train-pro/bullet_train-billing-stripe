@@ -6,6 +6,12 @@ class Account::Billing::Stripe::SubscriptionsController < Account::ApplicationCo
   def checkout
     trial_days = @subscription.generic_subscription.included_prices.map { |ip| ip.price.trial_days }.compact.max
     allow_promotion_codes = @subscription.generic_subscription.included_prices.map { |ip| ip.price.allow_promotion_codes }.compact.any?
+    customer_auto_update_attributes =
+      if @team.stripe_customer_id
+        { customer_update: { name: "auto", address: "auto" } }
+      else
+        {}
+      end
 
     session_attributes = {
       payment_method_types: ["card"],
@@ -19,6 +25,8 @@ class Account::Billing::Stripe::SubscriptionsController < Account::ApplicationCo
       cancel_url: url_for([:account, @subscription.generic_subscription]),
       allow_promotion_codes: allow_promotion_codes,
       payment_method_collection: 'if_required',
+      tax_id_collection: { enabled: true },
+      **customer_auto_update_attributes
     }
 
     unless @team.stripe_customer_id
