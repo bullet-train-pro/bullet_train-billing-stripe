@@ -17,7 +17,10 @@ class Billing::Stripe::Subscription < ApplicationRecord
       # We need the full-blown subscription object for the end of cycle timing.
       stripe_subscription = Stripe::Subscription.retrieve(stripe_checkout_session.subscription)
       update(stripe_subscription_id: stripe_checkout_session.subscription)
-      generic_subscription.update(status: :active, cycle_ends_at: Time.at(stripe_subscription.current_period_end))
+      # This conditional is here to work around an API change:
+      # https://docs.stripe.com/changelog/basil/2025-03-31/deprecate-subscription-current-period-start-and-end
+      cycle_ends_at = stripe_subscription.respond_to?(:current_period_end) ? stripe_subscription.current_period_end : stripe_subscription.items.data.first.current_period_end
+      generic_subscription.update(status: :active, cycle_ends_at: Time.at(cycle_ends_at))
       team.update(stripe_customer_id: stripe_checkout_session.customer)
     end
   end
